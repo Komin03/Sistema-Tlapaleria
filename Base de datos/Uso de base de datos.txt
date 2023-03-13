@@ -1,1 +1,11 @@
 La base de datos se encuentra alojada en https://www.freesqldatabase.com/account/
+
+Acceso a la base de datos
+
+http://www.phpmyadmin.co/
+
+Host: sql9.freesqldatabase.com
+Database name: sql9605455
+Database user: sql9605455
+Database password: kSfvJxme3A
+Port number: 3306
