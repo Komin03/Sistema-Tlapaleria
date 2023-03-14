@@ -25,36 +25,36 @@ RFC: **********
 Correo: **********
 
 
-> Introducción
+# Introducción
 
 
-> Propósito
+# Propósito
 
 
-> Alcance
+# Alcance
 
 
-> Personal Involucrado
+# Personal Involucrado
 
-Nombre Arturo Marín Calva
-Rol Analista, diseñador, desarrollador.
-Categoría profesional Ingeniero de Software
-Responsabilidades Comunicación, planeación, modelado y despliegue
-Información de
-contacto
+> **Nombre** Aquino Mercado Jose Alfredo
+**Rol** Analista, diseñador, desarrollador.
+**Categoría profesional** Ingeniero de Software
+**Responsabilidades** Comunicación, planeación, modelado y despliegue
 
-Teléfono: 7711226830
-E-mail: marin.inc@hotmail.com
+> **Nombre** Nunez Mora Angel Heziel
+**Rol** Diseñador y desarrollador
+**Categoría profesional** Ingeniero de Software
+**Responsabilidades** Modelado y construcción
 
-Aprobación Aprobado
-Nombre Víctor Manuel Quintero Pérez
-Rol Diseñador y desarrollador
-Categoría profesional Ingeniero de Software
-Responsabilidades Modelado y construcción
-Información de
-contacto
+> **Nombre** Salvador Morales Kevin Yair
+**Rol** Diseñador y desarrollador
+**Categoría** profesional Ingeniero de Software
+**Responsabilidades** Modelado y construcción
 
-Teléfono: 7721155468
-E-mail: victor.quintero@hotmail.com
+> **Nombre** Villa Cruz Ulises
+**Rol** Diseñador y desarrollador
+**Categoría profesional** Ingeniero de Software
+**Responsabilidades** Modelado y construcción
 
-Aprobación Aprobado
+
+
