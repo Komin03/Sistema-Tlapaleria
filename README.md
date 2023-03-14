@@ -23,3 +23,38 @@ Dirección General
 Tel: **********
 RFC: **********
 Correo: **********
+
+
+> Introducción
+
+
+> Propósito
+
+
+> Alcance
+
+
+> Personal Involucrado
+
+Nombre Arturo Marín Calva
+Rol Analista, diseñador, desarrollador.
+Categoría profesional Ingeniero de Software
+Responsabilidades Comunicación, planeación, modelado y despliegue
+Información de
+contacto
+
+Teléfono: 7711226830
+E-mail: marin.inc@hotmail.com
+
+Aprobación Aprobado
+Nombre Víctor Manuel Quintero Pérez
+Rol Diseñador y desarrollador
+Categoría profesional Ingeniero de Software
+Responsabilidades Modelado y construcción
+Información de
+contacto
+
+Teléfono: 7721155468
+E-mail: victor.quintero@hotmail.com
+
+Aprobación Aprobado
