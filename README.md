@@ -1,8 +1,11 @@
 # Sistema-Tlapaleria
 
 ## TECNOLOGIAS SELECCIONADAS
+
 > **Ciente**
 Del lado del cliente se utilizara el lenguaje java en un sistema local 
+
+
 > **Servidor**
 Del lado del servidor se realizara a travez de Web Services del tipo Soap para la funcionalidad del sistema, ademas de tener la posibilidad de ser migrado a un sitio web
 
