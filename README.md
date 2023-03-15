@@ -3,6 +3,10 @@
 ## TECNOLOGIAS SELECCIONADAS
 > Se trabajara con la metodologia Scrum
 
+
+> Cronograma de actividades https://tattered-professor-6b9.notion.site/87ca3b4a4fa64c469b7bfd17b9e87002?v=8aa7896775334fa8b715c8c57de0ef25
+
+
 > **Ciente**
 En el lado del servidor se utilizara Java con las siguientes caracteristicas 
 - Netbeans 13
