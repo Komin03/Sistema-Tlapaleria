@@ -17,7 +17,20 @@ Del lado del servidor se realizara a travez de Web Services del tipo Soap para l
  * Conector MySQL version 5.1.46
  * Netbeans version 8.0.2
  * Base de datos en linea alojada en https://www.freesqldatabase.com/account/ corriendo MySQL
- * Apache version
+    Servidor: sql9.freesqldatabase.com via TCP/IP
+Tipo de servidor: MySQL
+Versión del servidor: 5.5.62-0ubuntu0.14.04.1 - (Ubuntu)
+Versión del protocolo: 10
+Usuario: sql9605455@ec2-52-8-112-233.us-west-1.compute.amazonaws.com
+Conjunto de caracteres del servidor: UTF-8 Unicode (utf8)
+ * Apache 
+ Apache/2.4.18 (Ubuntu)
+Versión del cliente de base de datos: libmysql - mysqlnd 5.0.12-dev - 20150407 - $Id: b5c5906d452ec590732a93b051f3827e02749b83 $
+extensión PHP: mysqliDocumentación mbstringDocumentación
+Versión de PHP: 7.0.33-0ubuntu0.16.04.16
+
+PHP MyAdmin
+4.7.1, versión estable
 
 
 ***********************************************
