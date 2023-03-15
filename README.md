@@ -11,6 +11,11 @@ En el lado del servidor se utilizara Java con las siguientes caracteristicas
 
 > **Servidor**
 Del lado del servidor se realizara a travez de Web Services del tipo Soap para la funcionalidad del sistema, ademas de tener la posibilidad de ser migrado a un sitio web
+ * Java JDK version 1.8
+ * Conector MySQL version 5.1.46
+ * Netbeans version 8.0.2
+ * MySQL version 
+ * Apache version
 
 ***********************************************
 ## Introducción
