@@ -3,7 +3,10 @@
 ## TECNOLOGIAS SELECCIONADAS
 
 > **Ciente**
-Del lado del cliente se utilizara el lenguaje java en un sistema local 
+En el lado del servidor se utilizara Java con las siguientes caracteristicas 
+- Netbeans 13
+- JDK 19
+- 
 
 
 > **Servidor**
