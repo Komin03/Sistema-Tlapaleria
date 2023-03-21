@@ -4,8 +4,8 @@ Acceso a la base de datos
 
 http://www.phpmyadmin.co/
 
-Host: sql9.freesqldatabase.com
-Database name: sql9605455
-Database user: sql9605455
-Database password: kSfvJxme3A
+Host: sql10.freesqldatabase.com
+Database name: sql10607574
+Database user: sql10607574
+Database password: LFtU79Pkcq
 Port number: 3306
