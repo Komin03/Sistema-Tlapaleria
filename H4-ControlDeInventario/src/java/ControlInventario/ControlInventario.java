@@ -5,6 +5,7 @@
  */
 package ControlInventario;
 
+import Modelo.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
@@ -28,15 +29,9 @@ public class ControlInventario {
      */
     @WebMethod(operationName = "obtenerProductosJSON")
     public String ObtenerProductos() {
-        
-        String url = "jdbc:mysql://sql10.freesqldatabase.com:3306/sql10607574";
-String user = "sql10607574";
-String password = "LFtU79Pkcq";
-JSONObject jsonObject = new JSONObject();
-try {
-    Connection conn = DriverManager.getConnection(url, user, password);
-    System.out.println("Conexión exitosa a la base de datos!");
-    
+        Modelo _modelo = new Modelo();
+       JSONObject jsonObject = new JSONObject();
+       Connection conn = _modelo.getConection();
     try {
         conn.setAutoCommit(true);
         Statement stmt = conn.createStatement();
@@ -60,9 +55,7 @@ try {
     } catch (SQLException e) {
         System.err.println("Error al crear el objeto Statement: " + e.getMessage());
     }
-} catch (SQLException e) {
-    e.printStackTrace();
-}
+
 
    return jsonObject.toString(); }
 }
