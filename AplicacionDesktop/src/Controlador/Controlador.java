@@ -70,7 +70,14 @@ public class Controlador {
         table = new JTable(tableData, new Object[] {"Nombre", "Apellido", "Edad"});
         
         Inventario.tblInventario = table;
+        
+        
+        /*
+        Estoy haciendo un cambio
+        */
+        System.out.println("mnsdma,.,fndfjkhajkrdjfsndfmvmnasiljfeklasdfklasdnfmas,.dnf,mnsdfnlsakdfnm,sndfm,nsaflkfjkasdhfjkahsdfkjhaskjdlhdsfkjhalskdjhfjksadhfkjhsadkjfhkjashdfkljhsjdhl");
     }
+    
     
     
 }
