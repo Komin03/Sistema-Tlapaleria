@@ -3,31 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package inventario;
 
-package Test;
 import Modelo.Modelo;
-import java.sql.Statement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.json.JSONObject;
-import org.json.JSONArray;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Statement;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
 /**
  *
- * @author edit_
+ * @author Kevin
  */
-public class Test {
-    public static void main(String[] args) {
-        Modelo _modelo = new Modelo();
+@WebService(serviceName = "inventario")
+public class inventario {
+
+    /**
+     * This is a sample web service operation
+     */
+    @WebMethod(operationName = "obtenerProductosJSON")
+    public String ObtenerProductos() {
+         Modelo _modelo = new Modelo();
         Connection conn = _modelo.getConection();
        
 String Return = "";
@@ -57,7 +57,5 @@ String Return = "";
     } catch (SQLException e) {
         System.err.println("Error al crear el objeto Statement: " + e.getMessage());
     }
-        System.out.println(Return);
-        
-    }
+        return Return;}
 }

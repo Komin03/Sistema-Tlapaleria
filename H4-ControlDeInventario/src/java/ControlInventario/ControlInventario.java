@@ -32,6 +32,7 @@ public class ControlInventario {
         Modelo _modelo = new Modelo();
        JSONObject jsonObject = new JSONObject();
        Connection conn = _modelo.getConection();
+       String Return = "";
     try {
         conn.setAutoCommit(true);
         Statement stmt = conn.createStatement();
@@ -46,7 +47,7 @@ public class ControlInventario {
             jsonObject.put("descipcion", rs.getString("descripcion"));
             jsonObject.put("precio", rs.getFloat("precio"));
             jsonObject.put("existencias", rs.getInt("existenacias"));
-            
+            Return = Return +jsonObject.toString();
         }
 
         rs.close();
@@ -57,7 +58,7 @@ public class ControlInventario {
     }
 
 
-   return jsonObject.toString(); }
+   return Return; }
 }
 
 

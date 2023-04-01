@@ -4,6 +4,9 @@
     <service name="ControlInventario">
       <implementation-class>ControlInventario.ControlInventario</implementation-class>
     </service>
+    <service name="inventario">
+      <implementation-class>inventario.inventario</implementation-class>
+    </service>
   </services>
   <clients>
     <client name="ControlInventario">
