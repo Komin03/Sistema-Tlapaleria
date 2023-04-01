@@ -4,9 +4,11 @@ import Vistas.*;
 import controlinventario.ControlInventario;
 import controlinventario.ControlInventario_Service;
 import java.awt.BorderLayout;
-
+import org.json.*;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,23 +17,31 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javax.swing.JTable;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import org.json.JSONException;
-import org.json.JSONTokener;
+import org.json.simple.parser.JSONParser;
+
+
+
 
 //Este es un cambio random
 
@@ -51,7 +61,9 @@ public class Controlador   {
     private InformeVentas InformeVentas;
     private Lealtad Lealtad;
     private Promociones Promociones;
-    private static Stage ventanaCarga;
+    private  Stage ventanaCarga;
+
+    private CargaDialog cargaDialog;
 
     
     
@@ -68,7 +80,7 @@ public class Controlador   {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                mostrarInventario2("");
+                mostrarInventario();
             
             }
         });
@@ -85,109 +97,62 @@ public class Controlador   {
         */
     }
     
-    public void mostrarInventario(){
-        
-        /*
-        WSBDatos_Service obj2=new WSBDatos_Service();
-         WSBDatos obj = obj2.getWSBDatosPort();
-        
-        */
-        // Parsear el JSON en un objeto JSONObject
-       // Platform.runLater(() -> mostrarCirculoDeCarga2("Cargando datos..."));
-        
-        
-        
-        
-         //ocultarCirculoDeCarga();
-        
-        }
     
-   public void mostrarInventario2(String jsonStr) {
-       // mostrarCirculoDeCarga2("Cargando...");
-       
-        ControlInventario_Service obj2=new ControlInventario_Service();
-         ControlInventario WSPDF = obj2.getControlInventarioPort();
-        // Crear un panel para agregar las tablas
-        JPanel panel = new JPanel();
-
-        // Dividir la cadena de texto en filas
-        String[] rows = jsonStr.split("\n");
-
-        
-            DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.addColumn("idProducto");
-            tableModel.addColumn("nombre");
-            tableModel.addColumn("descipcion");
-            tableModel.addColumn("existencias");
-            tableModel.addColumn("precio");
-
-            String jsonString = WSPDF.obtenerProductosJSON() ;
-
-           
-            String[] jsonDataArray = jsonString.split("\\r?\\n");
-            for (String jsonData : jsonDataArray) {
-        try {
-               JSONObject jsonObject = new JSONObject(jsonData);
-            Object[] rowData = {
-                    jsonObject.getInt("idProducto"),
-                    jsonObject.getString("nombre"),
-                    jsonObject.getString("descipcion"),
-                    jsonObject.getInt("existencias"),
-                    jsonObject.getDouble("precio")
-            };
-            tableModel.addRow(rowData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-            
-
-            // Crear la tabla con el modelo de tabla
-            JTable table = new JTable(tableModel);
-
-            // Agregar la tabla a un JScrollPane para permitir desplazamiento
-            JScrollPane scrollPane = new JScrollPane(table);
-
-            // Agregar el JScrollPane al panel
-            panel.add(scrollPane);
-        
-
-        // Agregar el panel al JFrame Inventario
-        Inventario.setContentPane(panel);
-
-        // Mostrar el JFrame Inventario
-        Inventario.pack();
+   public void mostrarInventario() {
+       mostrarCarga("Cargando Productos");
+       System.out.println("cargando...");
+       ControlInventario_Service obj2=new ControlInventario_Service();
+       ControlInventario WSPDF = obj2.getControlInventarioPort();
+       JPanel panel = new JPanel();
+       String[] columnNames = {"ID", "Nombre", "Descripción", "Existencias", "Precio"};
+       DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);
+       String jsonRecibido = "{'productos':["+ WSPDF.obtenerProductosJSON()+"]}";
+       jsonRecibido = jsonRecibido.replace("\"", "'");
+       System.out.println(jsonRecibido);
+       String json = jsonRecibido;
+       JSONObject objetoJson = new JSONObject(json);
+       JSONArray arrayProductos = objetoJson.getJSONArray("productos");
+       for (int i = 0; i < arrayProductos.length(); i++) {
+           JSONObject objetoProducto = arrayProductos.getJSONObject(i);
+           int idProducto = objetoProducto.getInt("idProducto");
+           String nombre = objetoProducto.getString("nombre");
+           String descripcion = objetoProducto.getString("descripcion");
+           int existencias = objetoProducto.getInt("existencias");
+           double precio = objetoProducto.getDouble("precio");
+           Object[] rowData = {idProducto, nombre, descripcion, existencias, precio};
+           modeloTabla.addRow(rowData);
+       }
+       JTable table = new JTable(modeloTabla);
+       JScrollPane scrollPane = new JScrollPane(table);
+       panel.add(scrollPane);
+       Inventario.setContentPane(panel);
+       Inventario.pack();
         Inventario.setVisible(true);
-        //ocultarCirculoDeCarga();
+        cerrarCarga();
     
 }
   
-    public static void mostrarCirculoDeCarga2(String mensaje) {
-        if (ventanaCarga == null) {
-            Arc arc = new Arc(20, 20, 20, 20, 0, 300);
-            arc.setFill(null);
-            arc.setStrokeWidth(4);
-            
-
-            Label etiquetaMensaje = new Label(mensaje);
-
-            Group grupoEtiqueta = new Group((Collection<Node>) etiquetaMensaje);
-            Group grupo = new Group(arc, grupoEtiqueta);
-
-            Paint paintTransparente = null;
-
-            ventanaCarga = new Stage();
-            ventanaCarga.initStyle(StageStyle.TRANSPARENT);
-            ventanaCarga.setScene(new Scene(grupo, 50, 50));
-        }
-
-        ventanaCarga.show();
+    public void mostrarCarga(String mensaje) {
+        SwingUtilities.invokeLater(() -> {
+            cargaDialog = new CargaDialog(mensaje);
+            cargaDialog.setVisible(true);
+        });
     }
-
-    public static void ocultarCirculoDeCarga() {
-        if (ventanaCarga != null) {
-            ventanaCarga.hide();
-        }
+    
+   public void circulo2() {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Circle Panel Test");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            CargaDialog panel = new CargaDialog("Loading...");
+            frame.add(panel, BorderLayout.CENTER);
+            frame.pack();
+            frame.setVisible(true);
+        });
+    }
+    public void cerrarCarga() {
+        SwingUtilities.invokeLater(() -> {
+           // cargaDialog.dispose();
+        });
     }
 
         

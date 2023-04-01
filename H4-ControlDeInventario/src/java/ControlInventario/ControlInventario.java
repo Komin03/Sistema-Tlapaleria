@@ -27,12 +27,15 @@ public class ControlInventario {
     /**
      * This is a sample web service operation
      */
-    @WebMethod(operationName = "obtenerProductosJSON")
+     @WebMethod(operationName = "obtenerProductosJSON")
     public String ObtenerProductos() {
-        Modelo _modelo = new Modelo();
-       JSONObject jsonObject = new JSONObject();
-       Connection conn = _modelo.getConection();
-       String Return = "";
+         Modelo _modelo = new Modelo();
+        Connection conn = _modelo.getConection();
+       
+String Return = "";
+
+
+    
     try {
         conn.setAutoCommit(true);
         Statement stmt = conn.createStatement();
@@ -41,13 +44,16 @@ public class ControlInventario {
         ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
 
         while (rs.next()) {
-            
+            JSONObject jsonObject = new JSONObject();
             jsonObject.put("idProducto", rs.getInt("idProducto"));
             jsonObject.put("nombre", rs.getString("nombre"));
-            jsonObject.put("descipcion", rs.getString("descripcion"));
+            jsonObject.put("descripcion", rs.getString("descripcion"));
             jsonObject.put("precio", rs.getFloat("precio"));
-            jsonObject.put("existencias", rs.getInt("existenacias"));
+            jsonObject.put("existencias", rs.getInt("existencias"));
             Return = Return +jsonObject.toString();
+           
+                Return = Return +",";
+            
         }
 
         rs.close();
@@ -56,9 +62,8 @@ public class ControlInventario {
     } catch (SQLException e) {
         System.err.println("Error al crear el objeto Statement: " + e.getMessage());
     }
-
-
-   return Return; }
+        return Return;}
 }
+
 
 
