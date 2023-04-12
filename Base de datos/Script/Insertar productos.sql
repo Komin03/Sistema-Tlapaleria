@@ -1,3 +1,4 @@
+USE ferreteria;
 -- Insertar productos
 INSERT INTO productos (nombre, descripcion, precio, existencias)
 VALUES
