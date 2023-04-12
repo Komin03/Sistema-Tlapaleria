@@ -5,9 +5,14 @@
  */
 package ControlInventario;
 
-import Modelo.*;
-import java.sql.Connection;
+import Modelo.Modelo;
 import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.json.JSONObject;
+import org.json.JSONArray;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,41 +33,43 @@ public class ControlInventario {
      * This is a sample web service operation
      */
      @WebMethod(operationName = "obtenerProductosJSON")
-    public String ObtenerProductos() {
-         Modelo _modelo = new Modelo();
-        Connection conn = _modelo.getConection();
-       
-String Return = "";
+    public static String ObtenerProductos() {
+    Modelo _modelo = new Modelo();
+Connection conn = _modelo.getConection();
+StringBuilder sb = new StringBuilder();
 
+try {
+    conn.setAutoCommit(true);
+    Statement stmt = conn.createStatement();
 
-    
-    try {
-        conn.setAutoCommit(true);
-        Statement stmt = conn.createStatement();
+    // aquí colocas tu consulta SQL
+    ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
 
-        // aquí colocas tu consulta SQL
-        ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
+    while (rs.next()) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idProducto", rs.getInt("idProducto"));
+        jsonObject.put("nombre", rs.getString("nombre"));
+        jsonObject.put("descripcion", rs.getString("descripcion"));
+        jsonObject.put("precio", rs.getFloat("precio"));
+        jsonObject.put("existencias", rs.getInt("existencias"));
 
-        while (rs.next()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("idProducto", rs.getInt("idProducto"));
-            jsonObject.put("nombre", rs.getString("nombre"));
-            jsonObject.put("descripcion", rs.getString("descripcion"));
-            jsonObject.put("precio", rs.getFloat("precio"));
-            jsonObject.put("existencias", rs.getInt("existencias"));
-            Return = Return +jsonObject.toString();
-           
-                Return = Return +",";
-            
+        if (!sb.toString().isEmpty()) {
+            sb.append(",");
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
-        System.err.println("Error al crear el objeto Statement: " + e.getMessage());
+        sb.append(jsonObject.toString());
     }
-        return Return;}
+
+    rs.close();
+    stmt.close();
+    conn.close();
+} catch (SQLException e) {
+    System.err.println("Error al crear el objeto Statement: " + e.getMessage());
+    return e.toString();
+}
+
+return sb.toString();
+    
+    }
 }
 
 

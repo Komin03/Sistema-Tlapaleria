@@ -1,6 +1,6 @@
 
 -- Usar la base de datos
-USE sql10607574;
+USE ferreteria;
 
 -- Crear la tabla de productos
 CREATE TABLE productos (
