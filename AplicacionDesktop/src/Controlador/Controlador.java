@@ -76,14 +76,14 @@ public class Controlador   {
         this.Promociones = promociones;
         
         //Agregar Listeners
-        this.Venta.btnMostrarInventario.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                mostrarInventario();
-            
-            }
-        });
+//        this.Venta.btnMostrarInventario.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                
+//                mostrarInventario();
+//            
+//            }
+//        });
         
          /*Inventario.btnCerrar.addMouseListener(new MouseAdapter() {
          @Override
