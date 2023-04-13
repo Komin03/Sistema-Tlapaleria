@@ -126,8 +126,6 @@ public class Venta extends javax.swing.JFrame {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jTextField6.setText("jTextField6");
-
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNombre.setText("Teclea el codigo del producto");
         lblNombre.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
