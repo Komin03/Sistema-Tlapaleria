@@ -1,44 +1,18 @@
 package Controlador;
 
+import Test.A;
 import Vistas.*;
 import controlinventario.ControlInventario;
 import controlinventario.ControlInventario_Service;
 import java.awt.BorderLayout;
 import org.json.*;
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.scene.Node;
 import javax.swing.JTable;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Arc;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import org.json.simple.parser.JSONParser;
 
 
 
@@ -99,14 +73,15 @@ public class Controlador   {
     
     
    public void mostrarInventario() {
-       mostrarCarga("Cargando Productos");
+       //mostrarCarga("Cargando Productos");
+       A a = new A();
        System.out.println("cargando...");
        ControlInventario_Service obj2=new ControlInventario_Service();
        ControlInventario WSPDF = obj2.getControlInventarioPort();
        JPanel panel = new JPanel();
        String[] columnNames = {"ID", "Nombre", "Descripción", "Existencias", "Precio"};
        DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);
-       String jsonRecibido = "{'productos':["+ WSPDF.obtenerProductosJSON()+"]}";
+       String jsonRecibido = "{'productos':["+ A.obtenerProductosJSON()+"]}";
        jsonRecibido = jsonRecibido.replace("\"", "'");
        System.out.println(jsonRecibido);
        String json = jsonRecibido;
@@ -128,7 +103,7 @@ public class Controlador   {
        Inventario.setContentPane(panel);
        Inventario.pack();
         Inventario.setVisible(true);
-        cerrarCarga();
+        //cerrarCarga();
     
 }
   
