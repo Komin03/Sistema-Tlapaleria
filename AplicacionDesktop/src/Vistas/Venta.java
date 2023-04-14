@@ -55,7 +55,7 @@ public class Venta extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jTextField6 = new javax.swing.JTextField();
         lblNombre = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -130,7 +130,12 @@ public class Venta extends javax.swing.JFrame {
         lblNombre.setText("Teclea el codigo del producto");
         lblNombre.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
-        jButton1.setText("Inventario");
+        btnInventario.setText("Inventario");
+        btnInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInventarioActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Informe");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -202,7 +207,7 @@ public class Venta extends javax.swing.JFrame {
                             .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField5)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnInventario)
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
@@ -254,7 +259,7 @@ public class Venta extends javax.swing.JFrame {
                                 .addComponent(lblNombre)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(btnInventario)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
                             .addComponent(jButton4))
@@ -291,6 +296,10 @@ public class Venta extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInventarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,7 +340,7 @@ public class Venta extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    public javax.swing.JButton btnInventario;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

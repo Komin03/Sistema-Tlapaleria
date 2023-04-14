@@ -26,36 +26,41 @@ public class A {
      */
         public static String obtenerProductosJSON() {
          Modelo _modelo = new Modelo();
-        Connection conn = _modelo.getConection();
-       
-String Return = "";
+Connection conn = _modelo.getConection();
+StringBuilder sb = new StringBuilder();
 
+try {
+    conn.setAutoCommit(true);
+    Statement stmt = conn.createStatement();
 
-    
-    try {
-        conn.setAutoCommit(true);
-        Statement stmt = conn.createStatement();
+    // aquí colocas tu consulta SQL
+    ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
 
-        // aquí colocas tu consulta SQL
-        ResultSet rs = stmt.executeQuery("SELECT * FROM productos");
+    while (rs.next()) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idProducto", rs.getInt("idProducto"));
+        jsonObject.put("nombre", rs.getString("nombre"));
+        jsonObject.put("descripcion", rs.getString("descripcion"));
+        jsonObject.put("precio", rs.getFloat("precio"));
+        jsonObject.put("existencias", rs.getInt("existencias"));
 
-        while (rs.next()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("idProducto", rs.getInt("idProducto"));
-            jsonObject.put("nombre", rs.getString("nombre"));
-            jsonObject.put("descipcion", rs.getString("descripcion"));
-            jsonObject.put("precio", rs.getFloat("precio"));
-            jsonObject.put("existencias", rs.getInt("existencias"));
-            Return = Return +jsonObject.toString();
+        if (!sb.toString().isEmpty()) {
+            sb.append(",\n");
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
-        System.err.println("Error al crear el objeto Statement: " + e.getMessage());
+        sb.append(jsonObject.toString());
     }
-        return Return;}
+
+    rs.close();
+    stmt.close();
+    conn.close();
+} catch (SQLException e) {
+    System.err.println("Error al crear el objeto Statement: " + e.getMessage());
+    return e.toString();
+}
+
+return sb.toString();
+            
+        }
     
     
     

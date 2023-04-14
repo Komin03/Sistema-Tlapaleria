@@ -1,0 +1,10 @@
+INDEX VERSION 1.132+E:\Escritorio\Sistema-Tlapaleria\.metadata\.plugins\org.eclipse.jdt.core
+4287010102.index
+887498979.index
+3834557412.index
+2172118711.index
+3247634290.index
+1865797976.index
+2799698408.index
+2500251453.index
+1509799344.index

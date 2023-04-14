@@ -5,6 +5,8 @@ import Vistas.*;
 import controlinventario.ControlInventario;
 import controlinventario.ControlInventario_Service;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import org.json.*;
 import javax.swing.JTable;
 import javafx.stage.Stage;
@@ -50,14 +52,14 @@ public class Controlador   {
         this.Promociones = promociones;
         
         //Agregar Listeners
-//        this.Venta.btnMostrarInventario.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                
-//                mostrarInventario();
-//            
-//            }
-//        });
+        this.Venta.btnInventario.addActionListener(new ActionListener() {
+          @Override
+           public void actionPerformed(ActionEvent e) {
+                
+                mostrarInventario();
+            
+           }
+       });
         
          /*Inventario.btnCerrar.addMouseListener(new MouseAdapter() {
          @Override
