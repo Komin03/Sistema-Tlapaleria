@@ -86,3 +86,11 @@ CREATE TABLE detalles_pedido (
     FOREIGN KEY (id_pedido) REFERENCES pedidos(idPedidos),
     FOREIGN KEY (id_producto) REFERENCES productos(idProducto)
 );
+
+// Creamos la tabla temporal en la base de datos
+CREATE TEMPORARY TABLE temp_venta (
+    idProducto INT NOT NULL,
+    nombreProducto VARCHAR(50) NOT NULL,
+    precioProducto DECIMAL(10,2) NOT NULL,
+    cantidad INT NOT NULL
+);

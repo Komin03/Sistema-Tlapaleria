@@ -8,6 +8,9 @@ package Main;
 import Controlador.Controlador;
 import Vistas.*;
 import java.awt.Frame;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 /**
  *
@@ -19,12 +22,21 @@ public class Ejecutable {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Ejecutable instancia = new Ejecutable();
+        ImageIcon icono = new ImageIcon(instancia.getClass().getResource("/IMAGES/unico.png"));
+
+        Image imagen = icono.getImage();
+
+
+        
+        UIManager.put("JFrame.icon", icono);
         Inventario2 inventario = new Inventario2 ();
         Venta venta = new Venta ();
         InformeVentas informeVentas = new InformeVentas ();
         Lealtad lealtad = new Lealtad ();
         Promociones promociones = new Promociones ();        
         Controlador controlador = new Controlador(inventario,venta,informeVentas,lealtad,promociones);
+        venta.setIconImage(imagen);
         venta.setVisible(true);
         
     }

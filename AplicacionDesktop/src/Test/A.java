@@ -11,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.jws.WebMethod;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -61,8 +64,8 @@ try {
 return sb.toString();
             
         }
-    
-    
+        
+         
     
     }
 
