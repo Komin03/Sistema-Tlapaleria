@@ -34,10 +34,11 @@ public class Ejecutable {
         Venta venta = new Venta ();
         InformeVentas informeVentas = new InformeVentas ();
         Lealtad lealtad = new Lealtad ();
-        Promociones promociones = new Promociones ();        
-        Controlador controlador = new Controlador(inventario,venta,informeVentas,lealtad,promociones);
+        Promociones promociones = new Promociones ();     
+        Login  login = new Login();
+        Controlador controlador = new Controlador(inventario,venta,informeVentas,lealtad,promociones,login);
         venta.setIconImage(imagen);
-        venta.setVisible(true);
+        login.setVisible(true);
         
     }
     

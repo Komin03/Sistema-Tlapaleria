@@ -65,6 +65,44 @@ return sb.toString();
             
         }
         
+        
+        
+         public static String obtenerProductosJSONVentas() {
+         Modelo _modelo = new Modelo();
+Connection conn = _modelo.getConection();
+StringBuilder sb = new StringBuilder();
+
+try {
+    conn.setAutoCommit(true);
+    Statement stmt = conn.createStatement();
+
+    // aquí colocas tu consulta SQL
+    ResultSet rs = stmt.executeQuery("SELECT * FROM ventas");
+
+    while (rs.next()) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idVentas", rs.getInt("idVentas"));
+        jsonObject.put("fecha", rs.getString("fecha"));
+        jsonObject.put("id_cliente", rs.getString("id_cliente"));
+        jsonObject.put("id_repartidor", rs.getFloat("id_repartidor"));
+
+        if (!sb.toString().isEmpty()) {
+            sb.append(",\n");
+        }
+        sb.append(jsonObject.toString());
+    }
+
+    rs.close();
+    stmt.close();
+    conn.close();
+} catch (SQLException e) {
+    System.err.println("Error al crear el objeto Statement: " + e.getMessage());
+    return e.toString();
+}
+
+return sb.toString();
+            
+        }
          
     
     }
