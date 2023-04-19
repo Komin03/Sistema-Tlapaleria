@@ -36,7 +36,8 @@ public class Ejecutable {
         Lealtad lealtad = new Lealtad ();
         Promociones promociones = new Promociones ();     
         Login  login = new Login();
-        Controlador controlador = new Controlador(inventario,venta,informeVentas,lealtad,promociones,login);
+        MultiOpcionesDePago multiOpcionesDePago = new MultiOpcionesDePago();
+        Controlador controlador = new Controlador(inventario,venta,informeVentas,lealtad,promociones,login,multiOpcionesDePago);
         venta.setIconImage(imagen);
         login.setVisible(true);
         

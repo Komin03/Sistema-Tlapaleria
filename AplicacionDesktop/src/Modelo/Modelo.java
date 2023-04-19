@@ -18,9 +18,12 @@ import org.json.JSONObject;
  */
 public class Modelo {
   public Connection getConection(){
-   String url = "jdbc:mysql://db4free.net:3306/ferreteria?useSSL=false";
-   String user = "kevin45789";
-   String password = "kevin45789";
+   //String url = "jdbc:mysql://db4free.net:3306/ferreteria?useSSL=false";
+     //  String user = "kevin45789";
+  //String password = "kevin45789";
+  String url = "jdbc:mysql://localhost:3306/ferreteria?useSSL=false";
+   String user = "root";
+   String password = "";
    try {
        Connection conn = DriverManager.getConnection(url, user, password);
        System.out.println("Conexión exitosa a la base de datos!");

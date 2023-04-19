@@ -77,14 +77,17 @@ try {
     Statement stmt = conn.createStatement();
 
     // aquí colocas tu consulta SQL
-    ResultSet rs = stmt.executeQuery("SELECT * FROM ventas");
+    ResultSet rs = stmt.executeQuery("SELECT * FROM ticket");
 
     while (rs.next()) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("idVentas", rs.getInt("idVentas"));
+        jsonObject.put("id", rs.getInt("id"));
+        jsonObject.put("idProducto", rs.getInt("idProducto"));
+        jsonObject.put("nombreProducto", rs.getString("nombreProducto"));
+        jsonObject.put("precioProducto", rs.getFloat("precioProducto"));
+        jsonObject.put("cantidad", rs.getInt("cantidad"));
+        jsonObject.put("cliente", rs.getString("cliente"));
         jsonObject.put("fecha", rs.getString("fecha"));
-        jsonObject.put("id_cliente", rs.getString("id_cliente"));
-        jsonObject.put("id_repartidor", rs.getFloat("id_repartidor"));
 
         if (!sb.toString().isEmpty()) {
             sb.append(",\n");

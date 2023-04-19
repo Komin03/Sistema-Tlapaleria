@@ -33,5 +33,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/ControlInventario"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/controlinventario"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-ControlInventario"/>
+    <target name="wsimport-client-WS" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/WS"/>
+        <property name="wsdl-WS" location="xml-resources/web-service-references/WS/wsdl/localhost_8080/WS/WS.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WS" destdir="${build.generated.dir}/jax-wsCache/WS" wsdl="${wsdl-WS}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/WS/WS?WSDL" xnocompile="true" xendorsed="true" package="WSBuenosUwU">
+            <depends file="${wsdl-WS}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/WS"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/WS">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-WS" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/WS"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/WSBuenosUwU"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-ControlInventario, wsimport-client-WS"/>
 </project>

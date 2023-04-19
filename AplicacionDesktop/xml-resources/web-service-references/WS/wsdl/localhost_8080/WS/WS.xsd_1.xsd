@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://pkgWS/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://pkgWS/">
+
+<xs:element name="BuscarInventario" type="tns:BuscarInventario"/>
+
+<xs:element name="BuscarInventarioResponse" type="tns:BuscarInventarioResponse"/>
+
+<xs:element name="CompletarVenta" type="tns:CompletarVenta"/>
+
+<xs:element name="CompletarVentaResponse" type="tns:CompletarVentaResponse"/>
+
+<xs:element name="EjecutarVenta" type="tns:EjecutarVenta"/>
+
+<xs:element name="EjecutarVentaResponse" type="tns:EjecutarVentaResponse"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="obtenerJason" type="tns:obtenerJason"/>
+
+<xs:element name="obtenerJasonResponse" type="tns:obtenerJasonResponse"/>
+
+<xs:complexType name="BuscarInventario">
+<xs:sequence>
+<xs:element name="StrBusqueda" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BuscarInventarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EjecutarVenta">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="EjecutarVentaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CompletarVenta">
+<xs:sequence>
+<xs:element name="Cliente" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CompletarVentaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerJason">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="obtenerJasonResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

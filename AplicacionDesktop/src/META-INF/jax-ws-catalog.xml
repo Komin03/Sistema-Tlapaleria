@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/H4-ControlDeInventario/ControlInventario?WSDL" uri="wsdl/localhost_8080/H4-ControlDeInventario/ControlInventario.wsdl"/>
     <system systemId="http://localhost:8080/H4-ControlDeInventario/ControlInventario?xsd=1" uri="wsdl/localhost_8080/H4-ControlDeInventario/ControlInventario.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/WS/WS?WSDL" uri="wsdl/localhost_8080/WS/WS.wsdl"/>
+    <system systemId="http://localhost:8080/WS/WS?xsd=1" uri="wsdl/localhost_8080/WS/WS.xsd_1.xsd"/>
 </catalog>

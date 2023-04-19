@@ -1,4 +1,5 @@
 
+CREATE database ferreteria CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 -- Usar la base de datos
 USE ferreteria;
 
@@ -23,6 +24,8 @@ CREATE TABLE clientes (
 CREATE TABLE trabajadores (
     idTrabajadores INT NOT NULL PRIMARY KEY auto_increment,
     nombre VARCHAR(50) NOT NULL,
+    contrasena VARCHAR(50) NOT NULL,
+    rol VARCHAR(50) NOT NULL,
     direccion VARCHAR(255) NOT NULL,
     telefono VARCHAR(20) NOT NULL,
     salario DECIMAL(10, 2) NOT NULL,
@@ -65,6 +68,7 @@ CREATE TABLE ventas (
     FOREIGN KEY (id_repartidor) REFERENCES repartidores(idRepartidores)
 );
 
+
 -- Crear la tabla de detalles de venta
 CREATE TABLE detalles_venta (
     idDetallesVenta INT PRIMARY KEY NOT NULL auto_increment,
@@ -87,10 +91,17 @@ CREATE TABLE detalles_pedido (
     FOREIGN KEY (id_producto) REFERENCES productos(idProducto)
 );
 
-// Creamos la tabla temporal en la base de datos
-CREATE TEMPORARY TABLE temp_venta (
+CREATE  TABLE temp_venta (
     idProducto INT NOT NULL,
     nombreProducto VARCHAR(50) NOT NULL,
     precioProducto DECIMAL(10,2) NOT NULL,
     cantidad INT NOT NULL
 );
+CREATE  TABLE ticket (
+    Operacion INT NOT NULL,
+    nombreProducto VARCHAR(50) NOT NULL,
+    precioProducto DECIMAL(10,2) NOT NULL,
+    cantidad INT NOT NULL,
+    Cliente VARCHAR(50) NOT NULL
+);
+

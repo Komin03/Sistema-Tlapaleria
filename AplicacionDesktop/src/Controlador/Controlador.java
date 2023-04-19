@@ -3,28 +3,31 @@ package Controlador;
 import Modelo.Modelo;
 import Test.A;
 import Vistas.*;
+import WSBuenosUwU.WS;
+import WSBuenosUwU.WS_Service;
 import controlinventario.ControlInventario;
 import controlinventario.ControlInventario_Service;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.List;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import org.json.*;
 import javax.swing.JTable;
@@ -60,12 +63,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Controlador   {
     A WSPD = new A();
+    
     private Inventario2 Inventario;
     private Venta Venta;
     private Login Login;    
     private InformeVentas InformeVentas;
     private Lealtad Lealtad;
     private Promociones Promociones;
+    private MultiOpcionesDePago MultiOpcionesDePago ;
     private  Stage ventanaCarga;
     private CargaDialog cargaDialog;
     private JTable tabla;
@@ -75,18 +80,22 @@ public class Controlador   {
     JPanel panelbusqueda = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15)); // 5px de margen
     JTextField txtBusca = new JTextField(20); // 20 es el ancho en caracteres del campo de texto
     JButton btnBusca = new JButton("Buscar");
-    double costoTotal;
+    double costoTotal=0.0;
+    WS_Service obj2=new WS_Service();
+    WS WS = obj2.getWSPort();
     
     
     
-    public Controlador(Inventario2 inventario, Venta venta, InformeVentas informeVentas, Lealtad lealtad, Promociones promociones,Login login) {
+    public Controlador(Inventario2 inventario, Venta venta, InformeVentas informeVentas, Lealtad lealtad, Promociones promociones,Login login, MultiOpcionesDePago multiOpcionesDePago) {
         this.Inventario = inventario;
         this.Venta = venta;
         this.InformeVentas = informeVentas;
         this.Lealtad = lealtad;
         this.Promociones = promociones;
         this.Login = login;
+        this.MultiOpcionesDePago = multiOpcionesDePago;
         fecha();
+        max();
         
         
         
@@ -96,12 +105,14 @@ public class Controlador   {
           @Override
            public void actionPerformed(ActionEvent e) {
               boolean login1 = login(Login.txtUsuario.getText(), Login.txtContrasena.getText(), Login.cbxRol.getSelectedItem().toString());
-                  if (login1) {
+                  //if (login1) {
+              if (login1) {
                   Venta.setVisible(true);
                   Login.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                   Login.dispose();
                   Venta.lblEmpleado.setText(currentUser);
-                  Venta.lblOperacion.setText(max());
+                  
+                  max();
               }
            }
        });
@@ -111,10 +122,10 @@ public class Controlador   {
         this.Venta.btnVentas.addActionListener(new ActionListener() {
           @Override
            public void actionPerformed(ActionEvent e) {
-                
+              
                 mostrarVentas();
                 //agregarBuscador();
-            
+            max();
            }
        });
         this.Venta.btnInventario.addActionListener(new ActionListener() {
@@ -153,79 +164,78 @@ public class Controlador   {
            }
        });
          
+         Venta.btnPagar.addActionListener(new ActionListener() {
+          @Override
+           public  void actionPerformed(ActionEvent e) {
+                     
+                      MultiOpcionesDePago.setVisible(true);
+                  Venta.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                  Venta.dispose();
+                       max();
+           }
+       });
          
+         MultiOpcionesDePago.btnConfirmar.addActionListener(new ActionListener() {
+          @Override
+           public  void actionPerformed(ActionEvent e) {
+                   WS.completarVenta(MultiOpcionesDePago.txtCliente.getText());
+                   Venta.setVisible(true);
+                  MultiOpcionesDePago.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                  MultiOpcionesDePago.dispose();
+                  CancelarCompra2();max();
+                   
+                       
+           }
+       });
          
+         MultiOpcionesDePago.btnRegresar.addActionListener(new ActionListener() {
+          @Override
+           public  void actionPerformed(ActionEvent e) {
+                     
+                  Venta.setVisible(true);
+                  MultiOpcionesDePago.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                  MultiOpcionesDePago.dispose();
+                       max();
+           }
+       });
          
-         
-         
-         
-         
-        
-         /*Inventario.btnCerrar.addMouseListener(new MouseAdapter() {
-         @Override
-      public void mouseClicked(MouseEvent e) {
-        Inventario.setVisible(false);
-                Inventario.setFocusableWindowState(false);
-                Venta.setVisible(true);
-        // Realiza la acción que deseas cuando se hace clic en el JLabel
-      }
-    });
-        */
+     //Fin Listeners
     }
     
-    
+ //Ya quedo en soap
    public void mostrarInventario() {
-       //mostrarCarga("Cargando Productos");
-       
-       System.out.println("cargando...");
-       ControlInventario_Service obj2=new ControlInventario_Service();
-       ControlInventario WSPDF = obj2.getControlInventarioPort();
        JPanel panel = new JPanel(new BorderLayout());
        panel.setBackground(Color.WHITE);
         JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5)); // 5px de margen
         JLabel label = new JLabel("Inventario");
-       
-               
-        labelPanel.add(label);
-        
-        
-        
+       labelPanel.add(label);
         panelbusqueda.add(txtBusca);
         panelbusqueda.add(btnBusca);
-
-        
         JPanel mainPanel = new JPanel();
         BoxLayout boxLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
         mainPanel.setLayout(boxLayout);
-
-        // Agregar los paneles existentes al nuevo panel
         mainPanel.add(labelPanel);
         mainPanel.add(panelbusqueda);
-
-// Agregar el nuevo panel al panel principal del inventario
-panel.add(mainPanel, BorderLayout.NORTH);
-
+        panel.add(mainPanel, BorderLayout.NORTH);
         JPanel tablePanel = new JPanel(new BorderLayout());
         String[] columnNames = {"ID", "Nombre", "Descripción", "Existencias", "Precio"};
-        DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);;
+        DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);
         
-               String jsonRecibido = "{'productos':["+ WSPD.obtenerProductosJSON()+"]}";
-       jsonRecibido = jsonRecibido.replace("\"", "'");
-       System.out.println(jsonRecibido);
-       String json = jsonRecibido;
-       JSONObject objetoJson = new JSONObject(json);
-       JSONArray arrayProductos = objetoJson.getJSONArray("productos");
-       for (int i = 0; i < arrayProductos.length(); i++) {
-           JSONObject objetoProducto = arrayProductos.getJSONObject(i);
-           int idProducto = objetoProducto.getInt("idProducto");
-           String nombre = objetoProducto.getString("nombre");
-           String descripcion = objetoProducto.getString("descripcion");
-           int existencias = objetoProducto.getInt("existencias");
-           double precio = objetoProducto.getDouble("precio");
-           Object[] rowData = {idProducto, nombre, descripcion, existencias, precio};
-           modeloTabla.addRow(rowData);
-           System.out.println(WSPDF);
-       }
+//////////////////////AQUI SE USA EL WS ///////////////////////
+        String jsonRecibido = "{'productos':["+ WS.obtenerJason()+"]}";
+        JSONObject objetoJson = new JSONObject(jsonRecibido);
+        JSONArray arrayProductos = objetoJson.getJSONArray("productos");
+
+        for (int i = 0; i < arrayProductos.length(); i++) {
+            JSONObject objetoProducto = arrayProductos.getJSONObject(i);
+            int idProducto = objetoProducto.getInt("idProducto");
+            String nombre = objetoProducto.getString("nombre");
+            String descripcion = objetoProducto.getString("descripcion");
+            int existencias = objetoProducto.getInt("existencias");
+            double precio = objetoProducto.getDouble("precio");
+            Object[] rowData = {idProducto, nombre, descripcion, existencias, precio};
+            modeloTabla.addRow(rowData);
+        }
        
         
        tabla = new JTable(modeloTabla);
@@ -254,118 +264,34 @@ panel.add(mainPanel, BorderLayout.NORTH);
         Inventario.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         Inventario.setLocation(0, 0);
         Inventario.setVisible(true);
-       
-       
-        //cerrarCarga();
-    
-}
-  
-    public void mostrarCarga(String mensaje) {
-        SwingUtilities.invokeLater(() -> {
-            cargaDialog = new CargaDialog(mensaje);
-            cargaDialog.setVisible(true);
-        });
-    }
-    
-   public void circulo2() {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Circle Panel Test");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            CargaDialog panel = new CargaDialog("Loading...");
-            frame.add(panel, BorderLayout.CENTER);
-            frame.pack();
-            frame.setVisible(true);
-        });
-    }
-    public void cerrarCarga() {
-        SwingUtilities.invokeLater(() -> {
-           // cargaDialog.dispose();
-        });
-    }
-    
-    public void buscarProducto() {
-    // Obtener el texto del JTextField
-    String textoBusqueda = txtBusca.getText();
-    
-    // Realizar la consulta a la base de datos con el texto de búsqueda
-    Modelo modelo = new Modelo();
-    Connection conn = modelo.getConection();
-    try {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM productos WHERE nombre LIKE ?");
-        stmt.setString(1, "%" + textoBusqueda + "%");
-        ResultSet rs = stmt.executeQuery();
-
-        // Crear un nuevo modelo de tabla con los resultados de la consulta
-        String[] columnNames = {"ID", "Nombre", "Descripción", "Existencias", "Precio"};
-        DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);
-        while (rs.next()) {
-            int idProducto = rs.getInt("idProducto");
-            String nombre = rs.getString("nombre");
-            String descripcion = rs.getString("descripcion");
-            int existencias = rs.getInt("existencias");
-            double precio = rs.getDouble("precio");
-            Object[] rowData = {idProducto, nombre, descripcion, existencias, precio};
-            modeloTabla.addRow(rowData);
-        }
-        
-        // Actualizar la tabla en el panel de inventario
-        JTable table = new JTable(modeloTabla);
-        JScrollPane scrollPane = new JScrollPane(table);
-        JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
-        Inventario.setContentPane(tablePanel);
-        Inventario.pack();
-        
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-    
+       }
+//Ya quedo en soap
     public void buscarProducto2() {
-        Modelo modelo = new Modelo();
-    Connection conn = modelo.getConection();
-    String busqueda = txtBusca.getText().trim(); // Obtener texto del JTextField y quitar espacios en blanco
-    if (busqueda.isEmpty()) {
-        // Si el JTextField está vacío, mostrar todos los productos
-        mostrarInventario();
-    } else {
-        // Si el JTextField no está vacío, buscar coincidencias en la base de datos
-        A WSPD = new A();
-        DefaultTableModel modeloTabla = new DefaultTableModel();
-        modeloTabla.addColumn("ID");
-        modeloTabla.addColumn("Nombre");
-        modeloTabla.addColumn("Descripción");
-        modeloTabla.addColumn("Existencias");
-        modeloTabla.addColumn("Precio");
-        try {
-            String consulta = "SELECT * FROM productos WHERE nombre LIKE ? OR descripcion LIKE ? OR id LIKE ?";
-            PreparedStatement pstmt = modelo.getConection().prepareStatement(consulta);
-            pstmt.setString(1, "%" + busqueda + "%"); // Buscar en la columna "nombre"
-            pstmt.setString(2, "%" + busqueda + "%"); // Buscar en la columna "descripcion"
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Object[] fila = new Object[5];
-                fila[0] = rs.getInt("idProducto");
-                fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("descripcion");
-                fila[3] = rs.getInt("existencias");
-                fila[4] = rs.getDouble("precio");
-                modeloTabla.addRow(fila);
-            }
-            rs.close();
-            pstmt.close();
-        } catch (SQLException e) {
-            System.err.println("Error al buscar producto: " + e.getMessage());
-            e.printStackTrace();
+        
+        String json = "{'productos':["+WS.buscarInventario(txtBusca.getText())+"]}";
+
+        JSONObject jsonObj = new JSONObject(json);
+        JSONArray productosArr = jsonObj.getJSONArray("productos");
+
+        Object[][] rows = new Object[productosArr.length()][5];
+        for (int i = 0; i < productosArr.length(); i++) {
+            JSONObject productoObj = productosArr.getJSONObject(i);
+            rows[i][0] = productoObj.getInt("idProducto");
+            rows[i][1] = productoObj.getString("nombre");
+            rows[i][2] = productoObj.getString("descripcion");
+            rows[i][3] = productoObj.getDouble("precio");
+            rows[i][4] = productoObj.getInt("existencias");
         }
-        // Actualizar la tabla con los resultados de la búsqueda
-        tabla.setModel(modeloTabla);
-    }
-}
+
+        DefaultTableModel model = new DefaultTableModel(
+                rows,
+                new String[]{"ID", "Nombre", "Descripción", "Precio", "Existencias"}
+        );
+        
+        tabla.setModel(model);
     
+}
+//Ya quedo en soap
     public void agregarProductoTemporal() {
         double costoProducto;
         Modelo _modelo = new Modelo();
@@ -373,9 +299,9 @@ Connection conn = _modelo.getConection();
     String idProductoStr = Venta.txtIdProducto.getText();
     if (!idProductoStr.isEmpty()) {
         int idProducto = Integer.parseInt(idProductoStr);
-        ControlInventario_Service obj2 = new ControlInventario_Service();
-        ControlInventario WSPDF = obj2.getControlInventarioPort();
-        String jsonRecibido = "{'productos':[" + WSPD.obtenerProductosJSON() + "]}";
+        ////////////////Aqui WS /////////////////////////////
+        String jsonRecibido = "{'productos':[" + WS.obtenerJason() + "]}";
+        System.out.println("\n\n\n\n{'productos':[" + WS.obtenerJason() + "]}");
         jsonRecibido = jsonRecibido.replace("\"", "'");
         String json = jsonRecibido;
         JSONObject objetoJson = new JSONObject(json);
@@ -392,14 +318,21 @@ Connection conn = _modelo.getConection();
                 costoTotal = costoTotal + costoProducto;
                 
                 Object[] rowData = {idProducto, nombre, precio, cantidad, costoProducto};
+ ////////////////////////////////
+                WS.ejecutarVenta();
                 
-                 DecimalFormat df = new DecimalFormat("#,##");
+                DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+                simbolos.setDecimalSeparator('.'); // Establecer el separador de decimales
+                //simbolos.setGroupingSeparator(','); // Establecer el separador de miles
+
+DecimalFormat df = new DecimalFormat("####.##", simbolos); // Usar los símbolos personalizados
                 df.setRoundingMode(RoundingMode.DOWN);
                 
                 Venta.lblTotal.setText(Double.parseDouble(df.format(costoTotal))+"$");
                 System.out.println(costoTotal+"$");
                  modeloTabla.addRow(rowData);
                  //double totalIva;// = actualizarTablaProductos()+ (actualizarTablaProductos()*(0.16)) ;
+                
                 
                 return;
             }
@@ -470,7 +403,32 @@ Connection conn = _modelo.getConection();
             stmt.close();
             conn.close();
             Venta.lblTotal.setText("0.0$");
+             costoTotal =0.0;
             JOptionPane.showMessageDialog(null, "Compra cancelada", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    }
+    
+    public  void CancelarCompra2() {
+         int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea realizar la compraI?", "Advertencia", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (opcion == JOptionPane.YES_OPTION) {
+        try {
+            // Establecer la conexión a la base de datos
+            Modelo _modelo = new Modelo();
+            Connection conn = _modelo.getConection();
+            // Ejecutar la sentencia para borrar los registros de la tabla
+            String query = "DELETE FROM temp_venta;";
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            actualizarTablaProductos();
+            // Cerrar las conexiones a la base de datos
+            stmt.close();
+            conn.close();
+            Venta.lblTotal.setText("0.0$");
+           costoTotal =0.0;
+            JOptionPane.showMessageDialog(null, "Compra Realizada con exito", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -482,6 +440,7 @@ Connection conn = _modelo.getConection();
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd   HH:mm:ss");
 
             while (true) {
+                
                 LocalDateTime fechaHoraActual = LocalDateTime.now();
                 String fechaHoraFormateada = fechaHoraActual.format(formato);
 
@@ -502,6 +461,7 @@ Connection conn = _modelo.getConection();
     }
     
    public boolean login(String username, String password, String role) {
+       
         Modelo modelo = new Modelo();
         Connection conn = modelo.getConection();
         PreparedStatement stmt = null;
@@ -556,23 +516,25 @@ Connection conn = _modelo.getConection();
         return currentUser;
     }
     
-    public String max() {
+    public void max() {
         Modelo modelo = new Modelo();
 Connection conn = modelo.getConection();
-int registro_mas_alto = 0;
+int registro_mas_alto;
 try {
     Statement stmt = conn.createStatement();
-    String sql = "SELECT MAX(idVentas) AS registro_mas_alto FROM ventas";
+    String sql = "SELECT MAX(id) AS registro_mas_alto FROM ticket";
     ResultSet rs = stmt.executeQuery(sql);
     if (rs.next()) {
          registro_mas_alto = rs.getInt("registro_mas_alto");
         registro_mas_alto =+1;
-        return String.valueOf(registro_mas_alto);
+        System.out.println(registro_mas_alto);
+        Venta.lblTurno.setText(String.valueOf(registro_mas_alto));
+        
     }
 } catch (SQLException e) {
     e.printStackTrace();
 }
-    return String.valueOf(registro_mas_alto);}
+    ;}
     
     
     public void mostrarVentas() {
@@ -591,8 +553,7 @@ try {
         
         
         
-        panelbusqueda.add(txtBusca);
-        panelbusqueda.add(btnBusca);
+      
 
         
         JPanel mainPanel = new JPanel();
@@ -607,22 +568,25 @@ try {
 panel.add(mainPanel, BorderLayout.NORTH);
 
         JPanel tablePanel = new JPanel(new BorderLayout());
-        String[] columnNames = {"idVentas", "fecha", "id_cliente", "id_repartidor"};
+        String[] columnNames = {"id", "idProducto", "nombreProducto", "precioProducto","cantidad","cliente","fecha"};
         DefaultTableModel modeloTabla = new DefaultTableModel(columnNames, 0);;
         
-               String jsonRecibido = "{'ventas':["+ WSPD.obtenerProductosJSONVentas()+"]}";
+               String jsonRecibido = "{'ticket':["+ WSPD.obtenerProductosJSONVentas()+"]}";
        jsonRecibido = jsonRecibido.replace("\"", "'");
        System.out.println(jsonRecibido);
        String json = jsonRecibido;
        JSONObject objetoJson = new JSONObject(json);
-       JSONArray arrayProductos = objetoJson.getJSONArray("ventas");
+       JSONArray arrayProductos = objetoJson.getJSONArray("ticket");
        for (int i = 0; i < arrayProductos.length(); i++) {
            JSONObject objetoProducto = arrayProductos.getJSONObject(i);
-           int idProducto = objetoProducto.getInt("idVentas");
-           String nombre = objetoProducto.getString("fecha");
-           String descripcion = objetoProducto.getString("id_cliente");
-           int existencias = objetoProducto.getInt("id_repartidor");
-           Object[] rowData = {idProducto, nombre, descripcion, existencias};
+           int id = objetoProducto.getInt("id");
+           int idProducto = objetoProducto.getInt("idProducto");
+           String nombreProducto = objetoProducto.getString("nombreProducto");
+           double precioProducto = objetoProducto.getInt("precioProducto");
+           int cantidad = objetoProducto.getInt("cantidad");
+           String cliente = objetoProducto.getString("cliente");
+           String fecha = objetoProducto.getString("fecha");
+           Object[] rowData = {id, idProducto,nombreProducto,precioProducto,cantidad,cliente,fecha};
            modeloTabla.addRow(rowData);
            System.out.println(WSPDF);
        }
@@ -659,6 +623,8 @@ panel.add(mainPanel, BorderLayout.NORTH);
         //cerrarCarga();
     
 }
+    
+    
   
      public void CuentaAbierta2() {
         
